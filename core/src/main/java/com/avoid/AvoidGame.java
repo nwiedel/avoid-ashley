@@ -1,34 +1,41 @@
 package com.avoid;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.avoid.screen.loading.LoadingScreen;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Logger;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class AvoidGame extends ApplicationAdapter {
+public class AvoidGame extends Game {
+
+    private AssetManager assetManager;
     private SpriteBatch batch;
-    private Texture image;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
-    }
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        assetManager = new AssetManager();
+        assetManager.getLogger().setLevel(Logger.DEBUG);
+
+        batch = new SpriteBatch();
+
+        setScreen(new LoadingScreen(this));
     }
 
     @Override
     public void dispose() {
+        assetManager.dispose();
         batch.dispose();
-        image.dispose();
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
     }
 }
