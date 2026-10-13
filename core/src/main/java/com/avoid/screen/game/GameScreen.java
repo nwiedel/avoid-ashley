@@ -1,6 +1,7 @@
 package com.avoid.screen.game;
 
 import com.avoid.AvoidGame;
+import com.avoid.common.EntityFactory;
 import com.avoid.config.GameConfig;
 import com.avoid.screen.menu.MenuScreen;
 import com.avoid.system.DebugCameraSystem;
@@ -27,6 +28,7 @@ public class GameScreen implements Screen {
     private Viewport viewport;
     private ShapeRenderer renderer;
     private PooledEngine engine;
+    private EntityFactory factory;
 
     public GameScreen(AvoidGame game) {
         this.game = game;
@@ -39,10 +41,14 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera);
         renderer = new ShapeRenderer();
+
         engine = new PooledEngine();
+        factory = new EntityFactory(engine);
 
         engine.addSystem(new GridRenderSystem(viewport, renderer));
         engine.addSystem(new DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y));
+
+        factory.addPlayer();
     }
 
     @Override
@@ -50,6 +56,8 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(GameConfig.CORNFLOWER_BLUE);
 
         engine.update(delta);
+
+        log.debug("Eintity Size: " + engine.getEntities().size());
     }
 
     @Override

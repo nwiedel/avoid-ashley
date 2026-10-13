@@ -20,7 +20,6 @@ public class DebugCameraSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        log.debug("update()");
 
         DEBUG_CAMERA_CONTROLLER.handleDebugInput(deltaTime);
         DEBUG_CAMERA_CONTROLLER.applyTo(camera);

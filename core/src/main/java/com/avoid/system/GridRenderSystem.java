@@ -20,7 +20,6 @@ public class GridRenderSystem extends EntitySystem {
 
     @Override
     public void update(float deltaTime) {
-        log.debug("update()");
         viewport.apply();
         ViewportUtils.drawGrid(viewport, renderer);
     }
