@@ -1,6 +1,11 @@
 package com.avoid.config;
 
+import com.badlogic.gdx.graphics.Color;
+
 public class GameConfig {
+
+    /** globale Hintergrundsfarbe */
+    public final static Color CORNFLOWER_BLUE = new Color(0.388f, 0.584f, 0.933f, 0.0f);
 
     public static final float WIDTH = 480f;  // pixels
     public static final float HEIGHT = 800f; // pixels
