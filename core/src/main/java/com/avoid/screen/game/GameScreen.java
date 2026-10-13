@@ -3,10 +3,12 @@ package com.avoid.screen.game;
 import com.avoid.AvoidGame;
 import com.avoid.config.GameConfig;
 import com.avoid.screen.menu.MenuScreen;
+import com.avoid.system.DebugCameraSystem;
 import com.avoid.system.GridRenderSystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -21,6 +23,7 @@ public class GameScreen implements Screen {
 
     private AssetManager assetManager;
 
+    private OrthographicCamera camera;
     private Viewport viewport;
     private ShapeRenderer renderer;
     private PooledEngine engine;
@@ -33,9 +36,13 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
 
-        viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT, camera);
         renderer = new ShapeRenderer();
         engine = new PooledEngine();
+
+        engine.addSystem(new GridRenderSystem(viewport, renderer));
+        engine.addSystem(new DebugCameraSystem(camera, GameConfig.WORLD_CENTER_X, GameConfig.WORLD_CENTER_Y));
     }
 
     @Override
@@ -43,8 +50,6 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(GameConfig.CORNFLOWER_BLUE);
 
         engine.update(delta);
-
-        engine.addSystem(new GridRenderSystem(viewport, renderer));
     }
 
     @Override
